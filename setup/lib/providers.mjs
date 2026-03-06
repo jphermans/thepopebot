@@ -19,6 +19,22 @@ export const PROVIDERS = {
       { id: 'claude-haiku-4-5-20251001', name: 'Claude Haiku 4.5' },
     ],
   },
+  zai: {
+    label: 'GLM (Z.AI / Zhipu)',
+    name: 'Z.AI',
+    envKey: 'ZAI_API_KEY',
+    keyPrefix: '',
+    keyPage: 'https://z.ai/model-api',
+    builtin: false,
+    baseUrl: 'https://api.z.ai/v1',
+    api: 'openai-completions',
+    models: [
+      { id: 'glm-4.7', name: 'GLM-4.7 (Flagship)', default: true },
+      { id: 'glm-4.6', name: 'GLM-4.6' },
+      { id: 'glm-4.5', name: 'GLM-4.5' },
+      { id: 'glm-4.5-air', name: 'GLM-4.5 Air (Fast)' },
+    ],
+  },
   openai: {
     label: 'GPT (OpenAI)',
     name: 'OpenAI',
