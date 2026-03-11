@@ -17,12 +17,13 @@ Set these in your `.env` file:
 
 | Variable | Description |
 |----------|-------------|
-| `LLM_PROVIDER` | `anthropic` (default), `openai`, `google`, or `custom` |
-| `LLM_MODEL` | Model name (e.g. `claude-sonnet-4-20250514`, `gpt-4o`) — uses provider default if unset |
+| `LLM_PROVIDER` | `anthropic` (default), `openai`, `google`, `zai`, or `custom` |
+| `LLM_MODEL` | Model name (e.g. `claude-sonnet-4-20250514`, `gpt-4o`, `glm-4.7`) — uses provider default if unset |
 | `LLM_MAX_TOKENS` | Max tokens for responses (default: `4096`) |
 | `ANTHROPIC_API_KEY` | Required for `anthropic` provider |
 | `OPENAI_API_KEY` | Required for `openai` provider |
 | `GOOGLE_API_KEY` | Required for `google` provider |
+| `ZAI_API_KEY` | Required for `zai` provider (Z.AI / Zhipu AI) |
 | `CUSTOM_API_KEY` | Required for `custom` provider (if the endpoint needs auth) |
 | `OPENAI_BASE_URL` | Custom OpenAI-compatible base URL (for `custom` provider, e.g. `http://localhost:11434/v1`) |
 
@@ -78,6 +79,46 @@ npx thepopebot set-var RUNS_ON self-hosted
 
 Now your chat uses Claude while every job runs on the local Ollama instance.
 
+## Using Z.AI (GLM Models)
+
+Z.AI (Zhipu AI) provides the GLM family of models with excellent reasoning and coding capabilities. The API is OpenAI-compatible.
+
+### Event Handler with Z.AI
+
+Add to your `.env`:
+
+```bash
+LLM_PROVIDER=zai
+LLM_MODEL=glm-4.7
+ZAI_API_KEY=your-zai-api-key
+```
+
+### Jobs with Z.AI
+
+Set GitHub repo variables:
+
+```bash
+npx thepopebot set-var LLM_PROVIDER zai
+npx thepopebot set-var LLM_MODEL glm-4.7
+```
+
+Set the API key as a GitHub secret:
+
+```bash
+npx thepopebot set-agent-secret ZAI_API_KEY your-zai-api-key
+```
+
+### Available Z.AI Models
+
+| Model | Description |
+|-------|-------------|
+| `glm-4.7` | Flagship model with frontier reasoning and coding (recommended) |
+| `glm-4.6` | Balanced performance and speed |
+| `glm-4.5` | General purpose |
+| `glm-4.5-air` | Fast and lightweight |
+
+Get your API key at [https://z.ai/model-api](https://z.ai/model-api)
+
 ## Per-Job Overrides
 
 Add `llm_provider` and `llm_model` to any agent-type entry in `config/CRONS.json` or any action in `config/TRIGGERS.json`. This overrides the default for just that one job:
@@ -102,6 +143,7 @@ The matching API key must already exist as a GitHub secret (see the Providers ta
 | Provider | What it is | Example model | GitHub secret needed |
 |----------|------------|---------------|----------------------|
 | `anthropic` | Anthropic (default) | `claude-sonnet-4-20250514` | `AGENT_ANTHROPIC_API_KEY` |
+| `zai` | Z.AI / Zhipu GLM | `glm-4.7` | `AGENT_ZAI_API_KEY` |
 | `openai` | OpenAI | `gpt-4o` | `AGENT_OPENAI_API_KEY` |
 | `google` | Google Gemini | `gemini-2.5-pro` | `AGENT_GOOGLE_API_KEY` |
 | `custom` | Any OpenAI-compatible API (DeepSeek, Ollama, Together AI, etc.) | `deepseek-chat` | `AGENT_CUSTOM_API_KEY` *(if required — see below)* |
